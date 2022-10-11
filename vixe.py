@@ -1,3 +1,4 @@
+#!./venv/bin/python3
 from pathlib import Path
 from random import randint
 from time import sleep
