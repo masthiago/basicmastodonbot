@@ -5,6 +5,24 @@ from time import sleep
 from decouple import config
 from mastodon import Mastodon
 
+
+def gen_vixe(nis=16, nxs=8, nes=8):
+    repeat = {
+        'is': 'i' * randint(1, nis),
+        'xs': 'x' * randint(1, nxs),
+        'es': 'e' * randint(1, nes),
+    }
+    return 'v{is}{xs}{es}!'.format(**repeat)
+
+
+def gen_faraway_vixe(vixe=None, distance=4):
+    new_vixe = gen_vixe()
+    if vixe is not None:
+        while abs(len(vixe) - len(new_vixe)) <= distance:
+            new_vixe = gen_vixe()
+    return new_vixe
+
+
 try:
 
     app_secret = Path(config('APP_SECRET_FILE'))
@@ -49,14 +67,8 @@ try:
             config('MIN_TIME_RANGE', cast=int),
             config('MAX_TIME_RANGE', cast=int)
         )
-        repeat = {
-            'is': 'i' * randint(1, 16),
-            'xis': 'x' * randint(1, 8),
-            'es': 'e' * randint(1, 8),
-        }
 
-        vixe = 'V{is}{xis}{es}!'.format(**repeat)
-
+        vixe = gen_faraway_vixe().capitalize()
         next = (datetime.now() + timedelta(seconds=interval)).strftime(
             '%d/%m/%Y %H:%Mh'
         )
